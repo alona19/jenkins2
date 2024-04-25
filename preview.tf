@@ -259,6 +259,7 @@ resource "aws_security_group" "webserversPython" {
     protocol    = "-1"
     cidr_blocks = ["10.0.0.0/16"]
   }
+}
 resource "aws_security_group" "lb_webservers" {
   name        = "lb-webservers-80"
   description = "Allow HTTP inbound traffic"
