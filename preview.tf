@@ -50,6 +50,13 @@ resource "aws_subnet" "subnet_1c" {
     Name = "subnet_1c"
   }
 }
+variable "AWS_SECRET_KEY_ID" {
+  description = "AWS access key ID"
+}
+
+variable "AWS_SECRET" {
+  description = "AWS secret access key"
+}
 
 
 resource "aws_internet_gateway" "mygw" {
