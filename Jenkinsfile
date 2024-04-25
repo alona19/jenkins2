@@ -18,7 +18,7 @@ pipeline {
         
             stage('Git checkout') {
             steps {
-                git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/Devopslearner2023/TerraformVM-MultiEnv.git'
+                git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/alona19/jenkins2.git'
             }
         }
         stage('Terraform init') {
