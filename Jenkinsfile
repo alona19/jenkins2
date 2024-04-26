@@ -6,11 +6,7 @@ pipeline {
         choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
     }
 
-    environment {
-        #AWS_SECRET_KEY_ID = credentials('AWS_SECRET_KEY_ID')
-        #AWS_SECRET = credentials('AWS_SECRET')
-        AWS_DEFAULT_REGION = 'ap-south-1'
-    }
+    
 
     stages {
         stage('Git checkout') {
