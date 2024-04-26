@@ -21,13 +21,10 @@ pipeline {
         }
         stage('Plan') {
             steps {
-                withEnv([
-                    "AWS_SECRET_KEY_ID=${AWS_SECRET_KEY_ID}",
-                    "AWS_SECRET=${AWS_SECRET}"
-                ]) {
+                
                     sh 'terraform plan -out tfplan'
                     sh 'terraform show -no-color tfplan > tfplan.txt'
-                }
+                
             }
         }
         stage('Apply / Destroy') {
