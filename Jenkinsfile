@@ -30,7 +30,7 @@ pipeline {
             steps {
                 {
                 withEnv([
-                    AWS_SECRET_KEY_ID
+                    
 
                     "AWS_SECRET_KEY_ID=${AWS_SECRET_KEY_ID}",
                     "AWS_SECRET=${AWS_SECRET}",
