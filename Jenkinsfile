@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'master'
+    }
 
     parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
@@ -23,10 +25,8 @@ pipeline {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'your-aws-credentials-id',
-                        accessKeyVariable: 'AWS_SECRET_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET'
-                        
-
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                     ]]) {
                         sh 'terraform plan -out tfplan'
                         sh 'terraform show -no-color tfplan > tfplan.txt'
