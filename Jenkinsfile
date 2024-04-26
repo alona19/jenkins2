@@ -1,22 +1,19 @@
 pipeline {
     agent any
 
-   
-
- parameters {
+    parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
     }
 
     environment {
-        AWS_SECRET_KEY_ID     = credentials('AWS_SECRET_KEY_ID')
+        AWS_SECRET_KEY_ID = credentials('AWS_SECRET_KEY_ID')
         AWS_SECRET = credentials('AWS_SECRET')
-        AWS_DEFAULT_REGION    = 'ap-south-1'
+        AWS_DEFAULT_REGION = 'ap-south-1'
     }
 
     stages {
-        
-            stage('Git checkout') {
+        stage('Git checkout') {
             steps {
                 git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/alona19/jenkins2.git'
             }
@@ -28,17 +25,13 @@ pipeline {
         }
         stage('Plan') {
             steps {
-                {
                 withEnv([
-                    
-
                     "AWS_SECRET_KEY_ID=${AWS_SECRET_KEY_ID}",
-                    "AWS_SECRET=${AWS_SECRET}",
-                    
-                ])
-                sh 'terraform plan -out tfplan'
-                sh 'terraform show -no-color tfplan > tfplan.txt'
-            }
+                    "AWS_SECRET=${AWS_SECRET}"
+                ]) {
+                    sh 'terraform plan -out tfplan'
+                    sh 'terraform show -no-color tfplan > tfplan.txt'
+                }
             }
         }
         stage('Apply / Destroy') {
@@ -48,18 +41,17 @@ pipeline {
                         if (!params.autoApprove) {
                             def plan = readFile 'tfplan.txt'
                             input message: "Do you want to apply the plan?",
-                            parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                                  parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                         }
 
-                        sh 'terraform ${action} -input=false tfplan'
+                        sh "terraform ${params.action} -input=false tfplan"
                     } else if (params.action == 'destroy') {
-                        sh 'terraform ${action} --auto-approve'
+                        sh "terraform ${params.action} --auto-approve"
                     } else {
                         error "Invalid action selected. Please choose either 'apply' or 'destroy'."
                     }
                 }
             }
         }
-
     }
 }
