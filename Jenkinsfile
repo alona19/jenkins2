@@ -6,6 +6,11 @@ pipeline {
         choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
     }
 
+    tools {
+        // Define Terraform installation named 'Terraform'
+        terraform 'Terraform'
+    }
+
     stages {
         stage('Git checkout') {
             steps {
